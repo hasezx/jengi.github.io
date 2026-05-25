@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Personal Hub</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="day">
+    <div class="app-shell" id="app-shell">
+      <aside class="sidebar" aria-label="Apps">
+        <div class="sidebar-header">
+          <button class="hamburger-button" id="sidebar-toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+        <div class="brand" aria-label="Personal Hub">
+          <span class="brand-mark">H</span>
+        </div>
+
+        <nav class="app-nav" aria-label="App selection">
+          <button class="nav-item active" type="button" data-app="calendar" aria-label="Calendar" aria-pressed="true">
+            <img class="nav-icon" src="assets/icons/calendar.svg" alt="" aria-hidden="true" />
+            <span class="nav-label">Calendar</span>
+          </button>
+          <button class="nav-item" type="button" data-app="reminders" aria-label="Reminders" aria-pressed="false">
+            <img class="nav-icon" src="assets/icons/reminders.svg" alt="" aria-hidden="true" />
+            <span class="nav-label">Reminders</span>
+          </button>
+          <button class="nav-item" type="button" data-app="clock" aria-label="Clock" aria-pressed="false">
+            <img class="nav-icon" src="assets/icons/clock.svg" alt="" aria-hidden="true" />
+            <span class="nav-label">Clock</span>
+          </button>
+          <button class="nav-item" type="button" data-app="settings" aria-label="Settings" aria-pressed="false">
+            <img class="nav-icon" src="assets/icons/settings.svg" alt="" aria-hidden="true" />
+            <span class="nav-label">Settings</span>
+          </button>
+        </nav>
+      </aside>
+      <button class="sidebar-reopen" id="sidebar-reopen" type="button" aria-label="Open sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <main class="main-panel">
+        <section class="app-view active" id="calendar-view" aria-labelledby="calendar-title">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow" id="today-label">Today</p>
+              <h1 id="calendar-title">Calendar</h1>
+            </div>
+            <div class="top-actions">
+              <button class="icon-button" id="show-calendar-form" type="button" aria-label="Add event">+</button>
+            </div>
+          </header>
+
+          <form class="calendar-form" id="calendar-form">
+            <label>
+              <span>Title</span>
+              <input id="calendar-event-title" type="text" placeholder="Event" required />
+            </label>
+            <div class="form-grid">
+              <label>
+                <span>Date</span>
+                <input id="calendar-event-date" type="date" required />
+              </label>
+              <label>
+                <span>Type</span>
+                <select id="calendar-event-type">
+                  <option value="event">Event</option>
+                  <option value="birthday">Birthday</option>
+                  <option value="reminder">Reminder</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary-button" id="cancel-calendar-event" type="button">Cancel</button>
+              <button class="primary-button" type="submit">Add</button>
+            </div>
+          </form>
+
+          <div class="calendar-layout">
+            <section class="month-panel" aria-label="Month calendar">
+              <div class="month-header">
+                <button class="icon-button subtle" id="prev-month" type="button" aria-label="Previous month">&lt;</button>
+                <h2 id="month-label">Month</h2>
+                <button class="icon-button subtle" id="next-month" type="button" aria-label="Next month">&gt;</button>
+              </div>
+              <div class="weekday-grid" aria-hidden="true">
+                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+              </div>
+              <div class="day-grid" id="day-grid"></div>
+            </section>
+
+            <section class="agenda-panel" aria-labelledby="agenda-title">
+              <div class="section-heading">
+                <h2 id="agenda-title">Up Next</h2>
+                <span class="date-pill" id="agenda-date">Date</span>
+              </div>
+              <div class="event-list" id="upcoming-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="app-view" id="reminders-view" aria-labelledby="reminders-title">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Tasks</p>
+              <h1 id="reminders-title">Reminders</h1>
+            </div>
+            <button class="icon-button" id="show-reminder-form" type="button" aria-label="Create reminder">+</button>
+          </header>
+
+          <form class="reminder-form" id="reminder-form">
+            <label>
+              <span>Title</span>
+              <input id="reminder-title" type="text" placeholder="Reminder" required />
+            </label>
+            <label>
+              <span>Description</span>
+              <textarea id="reminder-description" rows="3"></textarea>
+            </label>
+            <div class="form-grid">
+              <label>
+                <span>Time</span>
+                <input id="reminder-time" type="datetime-local" step="60" />
+              </label>
+              <label>
+                <span>Address</span>
+                <input id="reminder-address" type="text" placeholder="Optional location" />
+              </label>
+            </div>
+            <label>
+              <span>Priority</span>
+              <select id="reminder-priority">
+                <option value="">None</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <div class="form-grid">
+              <label>
+                <span>Repeat</span>
+                <select id="reminder-repeat">
+                  <option value="">Never</option>
+                  <option value="hourly">Hourly</option>
+                  <option value="daily">Daily</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="yearly">Yearly</option>
+                  <option value="custom-days">Every X days</option>
+                </select>
+              </label>
+              <label>
+                <span>Every</span>
+                <input id="reminder-repeat-days" type="number" min="1" max="365" inputmode="numeric" placeholder="Days" disabled />
+              </label>
+            </div>
+            <div class="form-actions">
+              <button class="secondary-button" id="cancel-reminder" type="button">Cancel</button>
+              <button class="primary-button" type="submit">Create</button>
+            </div>
+          </form>
+
+          <section class="reminder-list" id="reminder-list" aria-label="Reminder list"></section>
+          <section class="completed-panel" aria-labelledby="completed-title">
+            <div class="section-heading">
+              <h2 id="completed-title">Checked This Week</h2>
+              <span class="date-pill" id="completed-count">0</span>
+            </div>
+            <div class="completed-list" id="completed-list"></div>
+          </section>
+        </section>
+
+        <section class="app-view" id="clock-view" aria-labelledby="clock-title">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Time tools</p>
+              <h1 id="clock-title">Clock</h1>
+            </div>
+          </header>
+
+          <div class="clock-tabs" role="tablist" aria-label="Clock tools">
+            <button class="tab active" type="button" data-clock-tab="timer" role="tab" aria-selected="true">Timer</button>
+            <button class="tab" type="button" data-clock-tab="alarms" role="tab" aria-selected="false">Alarms</button>
+            <button class="tab" type="button" data-clock-tab="world" role="tab" aria-selected="false">World Clock</button>
+          </div>
+
+          <section class="clock-panel active" id="timer-panel">
+            <button class="timer-face" id="timer-display" type="button" aria-label="Edit timer">00:05:00</button>
+            <div class="timer-editor" id="timer-editor" hidden>
+              <input id="timer-hours" type="number" min="0" max="23" inputmode="numeric" aria-label="Hours" />
+              <span>h</span>
+              <input id="timer-minutes" type="number" min="0" max="59" inputmode="numeric" aria-label="Minutes" />
+              <span>m</span>
+              <input id="timer-seconds" type="number" min="0" max="59" inputmode="numeric" aria-label="Seconds" />
+              <span>s</span>
+            </div>
+            <div class="preset-timers" aria-label="Preset timers">
+              <button class="preset-button" type="button" data-preset-seconds="900">15 min</button>
+              <button class="preset-button" type="button" data-preset-seconds="2700">45 min</button>
+            </div>
+            <div class="timer-controls">
+              <button class="secondary-button" type="button" id="minus-minute">-1m</button>
+              <button class="primary-button" type="button" id="start-timer">Start</button>
+              <button class="secondary-button" type="button" id="plus-minute">+1m</button>
+            </div>
+            <button class="text-button" type="button" id="reset-timer">Reset</button>
+          </section>
+
+          <section class="clock-panel" id="alarms-panel">
+            <div class="section-heading">
+              <h2>Alarms</h2>
+              <button class="icon-button" type="button" aria-label="Add alarm">+</button>
+            </div>
+            <div class="alarm-list">
+              <article class="alarm-row">
+                <div>
+                  <strong>6:45 AM</strong>
+                  <span>Weekdays</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked />
+                  <span></span>
+                </label>
+              </article>
+              <article class="alarm-row">
+                <div>
+                  <strong>9:30 PM</strong>
+                  <span>Wind down</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span></span>
+                </label>
+              </article>
+            </div>
+          </section>
+
+          <section class="clock-panel" id="world-panel">
+            <div class="section-heading">
+              <h2>World Clock</h2>
+              <button class="icon-button" id="show-world-form" type="button" aria-label="Add city">+</button>
+            </div>
+            <form class="world-form" id="world-form">
+              <label>
+                <span>City</span>
+                <input id="world-city" type="text" placeholder="City name" required />
+              </label>
+              <label>
+                <span>Time zone</span>
+                <select id="world-zone">
+                  <option value="America/Chicago">Chicago</option>
+                  <option value="America/New_York">New York</option>
+                  <option value="America/Los_Angeles">Los Angeles</option>
+                  <option value="America/Mexico_City">Mexico City</option>
+                  <option value="Europe/London">London</option>
+                  <option value="Europe/Madrid">Madrid</option>
+                  <option value="Europe/Paris">Paris</option>
+                  <option value="Asia/Tokyo">Tokyo</option>
+                  <option value="Asia/Seoul">Seoul</option>
+                  <option value="Asia/Dubai">Dubai</option>
+                  <option value="Australia/Sydney">Sydney</option>
+                </select>
+              </label>
+              <div class="form-actions">
+                <button class="secondary-button" id="cancel-world-city" type="button">Cancel</button>
+                <button class="primary-button" type="submit">Add</button>
+              </div>
+            </form>
+            <div class="world-list" id="world-list"></div>
+          </section>
+        </section>
+
+        <section class="app-view" id="settings-view" aria-labelledby="settings-title">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Personalize</p>
+              <h1 id="settings-title">Settings</h1>
+            </div>
+          </header>
+
+          <section class="settings-list" aria-label="Appearance settings">
+            <label class="settings-row">
+              <span>
+                <strong>Dark mode</strong>
+                <small>Switch between white and night themes.</small>
+              </span>
+              <input id="night-mode" type="checkbox" />
+            </label>
+            <label class="settings-row stacked">
+              <span>
+                <strong>Background hue</strong>
+                <small>Shift the background tint while keeping the layout simple.</small>
+              </span>
+              <input id="background-hue" type="range" min="0" max="360" value="0" />
+            </label>
+            <label class="settings-row">
+              <span>
+                <strong>Font color</strong>
+                <small>Choose the main text color.</small>
+              </span>
+              <input id="font-color" type="color" value="#111111" />
+            </label>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
