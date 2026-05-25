@@ -1,7 +1,4 @@
 const appButtons = document.querySelectorAll("[data-app]");
-const appShell = document.querySelector("#app-shell");
-const sidebarToggle = document.querySelector("#sidebar-toggle");
-const sidebarReopen = document.querySelector("#sidebar-reopen");
 const appViews = {
   calendar: document.querySelector("#calendar-view"),
   reminders: document.querySelector("#reminders-view"),
@@ -192,8 +189,18 @@ function createId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+function markedCalendarDates() {
+  const eventDates = [...builtInFestivities(), ...calendarEvents].map((event) => event.date);
+  const reminderDates = reminders
+    .filter((reminder) => reminder.time && !reminder.done)
+    .map((reminder) => reminder.time.slice(0, 10));
+
+  return new Set([...eventDates, ...reminderDates]);
+}
+
 function renderCalendar() {
   const currentDate = systemToday();
+  const markedDates = markedCalendarDates();
   monthLabel.textContent = formatDate(visibleMonth, { month: "long", year: "numeric" });
   todayLabel.textContent = formatDate(currentDate, { weekday: "long", month: "short", day: "numeric" });
   agendaDate.textContent = formatDate(selectedDate, { month: "short", day: "numeric" });
@@ -226,6 +233,10 @@ function renderCalendar() {
       button.classList.add("selected");
     }
 
+    if (markedDates.has(formatInputDate(date))) {
+      button.classList.add("has-items");
+    }
+
     button.addEventListener("click", () => {
       selectedDate = date;
       if (date.getMonth() !== visibleMonth.getMonth()) {
@@ -255,13 +266,6 @@ function switchApp(appName) {
     resetCalendarToSystemMonth();
     renderCalendar();
   }
-}
-
-function setSidebarCollapsed(isCollapsed) {
-  appShell.classList.toggle("sidebar-collapsed", isCollapsed);
-  sidebarToggle.setAttribute("aria-expanded", String(!isCollapsed));
-  sidebarToggle.setAttribute("aria-label", isCollapsed ? "Expand sidebar" : "Collapse sidebar");
-  localStorage.setItem("personalHubSidebarCollapsed", JSON.stringify(isCollapsed));
 }
 
 function saveCalendarEvents() {
@@ -752,15 +756,6 @@ appButtons.forEach((button) => {
   button.addEventListener("click", () => switchApp(button.dataset.app));
 });
 
-sidebarToggle.addEventListener("click", () => {
-  setSidebarCollapsed(!appShell.classList.contains("sidebar-collapsed"));
-});
-
-sidebarReopen.addEventListener("click", () => {
-  setSidebarCollapsed(false);
-  sidebarToggle.focus();
-});
-
 clockTabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     tab.classList.add("pressed");
@@ -950,7 +945,6 @@ presetButtons.forEach((button) => {
 });
 
 setupThemeControls();
-setSidebarCollapsed(JSON.parse(localStorage.getItem("personalHubSidebarCollapsed") || "false"));
 loadCalendarEvents();
 loadReminders();
 loadWorldClocks();

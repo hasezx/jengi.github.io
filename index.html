@@ -10,19 +10,8 @@
   </head>
   <body data-theme="day">
     <div class="app-shell" id="app-shell">
-      <aside class="sidebar" aria-label="Apps">
-        <div class="sidebar-header">
-          <button class="hamburger-button" id="sidebar-toggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
-        <div class="brand" aria-label="Personal Hub">
-          <span class="brand-mark">H</span>
-        </div>
-
-        <nav class="app-nav" aria-label="App selection">
+      <main class="main-panel">
+        <nav class="app-nav bottom-nav" aria-label="App selection">
           <button class="nav-item active" type="button" data-app="calendar" aria-label="Calendar" aria-pressed="true">
             <img class="nav-icon" src="assets/icons/calendar.svg" alt="" aria-hidden="true" />
             <span class="nav-label">Calendar</span>
@@ -40,14 +29,6 @@
             <span class="nav-label">Settings</span>
           </button>
         </nav>
-      </aside>
-      <button class="sidebar-reopen" id="sidebar-reopen" type="button" aria-label="Open sidebar">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      <main class="main-panel">
         <section class="app-view active" id="calendar-view" aria-labelledby="calendar-title">
           <header class="topbar">
             <div>
